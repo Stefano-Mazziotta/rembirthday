@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\RelationshipController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::prefix('relationship')->group(function () {
+    Route::get('/', [RelationshipController::class, 'getAll']);
+    Route::post('/', [RelationshipController::class, 'create']);
+    Route::delete('/{id}', [RelationshipController::class, 'delete']);
+    Route::get('/{id}', [RelationshipController::class, 'get']);
+    Route::put('/{id}', [RelationshipController::class, 'update']);
 });
