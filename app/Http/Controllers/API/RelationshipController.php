@@ -14,8 +14,8 @@ class RelationshipController extends Controller
     }
 
     public function create(Request $request){
-        $data['name'] = $request['name'];
-        Relationship::create();
+        $data['name'] = $request->query('name');
+        Relationship::create($data);
         return response()->json([
             'message' => "Successfully created",
             'success' => true
