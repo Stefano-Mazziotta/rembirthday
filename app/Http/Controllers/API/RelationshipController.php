@@ -11,12 +11,12 @@ class RelationshipController extends Controller
     public function getAll(){
         try {
 
-            $data = Relationship::all();
+            $relationships = Relationship::all();
 
             return response()->json([
                 'message' => "All relationships were obtained successfully",
                 'success' => true,
-                'data' => $data
+                'data' => $relationships
             ], 200);
             
         } catch (\Throwable $th) {
@@ -27,20 +27,20 @@ class RelationshipController extends Controller
     public function getById(string $id){
         try {
 
-            $data = Relationship::find($id);
+            $relationship = Relationship::where('id', '=', $id)->first();            
 
-            if(is_null($data)){
+            if(is_null($relationship)){
                 return response()->json([
                     'message' => "Not Found",
                     'success' => true,
-                    'data' => $data
+                    'data' => $relationship
                 ], 404);
             }
 
             return response()->json([
                 'message' => "The relationship with the id '".$id."' was obtained correctly",
                 'success' => true,
-                'data' => $data
+                'data' => $relationship
             ], 200);
             
         } catch (\Throwable $th) {
@@ -51,14 +51,24 @@ class RelationshipController extends Controller
     public function update(Request $request, $id){
         try {
 
-            // $data['name'] = $request['name'];
-            $data['name'] = $request->query('name');
-            Relationship::find($id)->update($data);
+            $data = $request->all();            
+
+            $relationship = Relationship::where('id','=', $id)->first();
+
+            if(is_null($relationship)){
+                return response()->json([
+                    'message' => "Not Found",
+                    'success' => true,
+                    'data' => null
+                ], 404);
+            }
+
+            $relationship->update($data);
 
             return response()->json([
                 'message' => "The relationship with the id '".$id."' was updated correctly",
                 'success' => true,
-                'data' => $data
+                'data' => $relationship
             ], 200);
             
         } catch (\Throwable $th) {
@@ -69,13 +79,16 @@ class RelationshipController extends Controller
     public function create(Request $request){
         try {
             
-            $data['name'] = $request->query('name');
-            $created = Relationship::create($data);
+            $data = $request->all();
+
+            $relationship = new Relationship();
+            $relationship->name = $data['name'];
+            $relationship->save();
 
             return response()->json([
                 'message' => "Successfully created",
                 'success' => true,
-                'data' => $created,
+                'data' => $relationship,
             ], 200);
 
         } catch (\Throwable $th) {
