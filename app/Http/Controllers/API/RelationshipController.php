@@ -23,7 +23,6 @@ class RelationshipController extends Controller
             return response()->json(['error' => 'Internal server error'], 500);
         }
     }
-
     public function getById(string $id){
         try {
 
@@ -47,7 +46,6 @@ class RelationshipController extends Controller
             return response()->json(['error' => 'Internal server error'], 500);
         }
     }
-
     public function update(Request $request, $id){
         try {
 
@@ -75,7 +73,6 @@ class RelationshipController extends Controller
             return response()->json(['error' => 'Internal server error'], 500);
         }
     }
-
     public function create(Request $request){
         try {
             
@@ -95,7 +92,6 @@ class RelationshipController extends Controller
             return response()->json(['error' => 'Internal server error'], 500);
         }       
     }
-
     public function delete(string $id){
         try {
             Relationship::where('id', $id)->delete();
@@ -109,6 +105,4 @@ class RelationshipController extends Controller
             return response()->json(['error' => 'Internal server error'], 500);
         }        
     }
-
-
 }
