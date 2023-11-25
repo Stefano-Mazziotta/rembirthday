@@ -23,6 +23,6 @@ Route::prefix('relationship')->group(function () {
     Route::get('/', [RelationshipController::class, 'getAll']);
     Route::post('/', [RelationshipController::class, 'create']);
     Route::delete('/{id}', [RelationshipController::class, 'delete']);
-    Route::get('/{id}', [RelationshipController::class, 'get']);
+    Route::get('/{id}', [RelationshipController::class, 'getById']);
     Route::put('/{id}', [RelationshipController::class, 'update']);
 });
