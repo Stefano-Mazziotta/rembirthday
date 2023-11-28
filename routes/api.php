@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\RelationshipController;
+use App\Http\Controllers\API\CelebrantController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,4 +26,12 @@ Route::prefix('relationship')->group(function () {
     Route::delete('/{id}', [RelationshipController::class, 'delete']);
     Route::get('/{id}', [RelationshipController::class, 'getById']);
     Route::put('/{id}', [RelationshipController::class, 'update']);
+});
+
+Route::prefix('celebrant')->group(function () {
+    Route::get('/', [CelebrantController::class, 'getAll']);
+    Route::post('/', [CelebrantController::class, 'create']);
+    Route::delete('/{id}', [CelebrantController::class, 'delete']);
+    Route::get('/{id}', [CelebrantController::class, 'getById']);
+    Route::put('/{id}', [CelebrantController::class, 'update']);
 });
