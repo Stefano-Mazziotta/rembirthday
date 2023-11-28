@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Celebrant;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CelebrantController extends Controller
@@ -79,23 +80,22 @@ class CelebrantController extends Controller
             // check request params
             $data = $request->all();
 
+            $birthday = Carbon::createFromFormat('d/m/Y', $data['birthday']);
+            $data['birthday'] = $birthday->toDateString();
+
             $celebrant = new Celebrant();
-            $celebrant->name = $data['name'];
-            $celebrant->surname = $data['surname'];
-            $celebrant->email = $data['email'];
-            $celebrant->birthday = $data['birthday'];
-            $celebrant->phone = $data['phone'];
-            $celebrant->relationship_id = $data['relationship_id'];
+            $celebrant->fill($data);
 
             $celebrant->save();
 
             return response()->json([
                 'message' => "Successfully created",
                 'success' => true,
-                'data' => $celZzzebrant,
+                'data' => $celebrant,
             ], 200);
 
         } catch (\Throwable $th) {
+            dd($th);
             return response()->json(['error' => 'Internal server error'], 500);
         }       
     }
@@ -109,7 +109,8 @@ class CelebrantController extends Controller
             ], 200);
             
         } catch (\Throwable $th) {
+            // Handle other exceptions
             return response()->json(['error' => 'Internal server error'], 500);
-        }        
+        }       
     }
 }
