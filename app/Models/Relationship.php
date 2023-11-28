@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Relationship extends Model
 {
@@ -14,4 +15,15 @@ class Relationship extends Model
     protected $fillable = [
         'name'
     ];
+
+    /*
+    * Get all of the celebrants for the Relationship
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function celebrants():HasMany
+    {
+        return $this->hasMany(Celebrant::class, 'relationship_id');
+    }
+
 }

@@ -11,7 +11,7 @@ class RelationshipController extends Controller
     public function getAll(){
         try {
 
-            $relationships = Relationship::all();
+            $relationships = Relationship::with('celebrants')->get();
 
             return response()->json([
                 'message' => "All relationships were obtained successfully",
