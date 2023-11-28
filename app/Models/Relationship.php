@@ -26,4 +26,16 @@ class Relationship extends Model
         return $this->hasMany(Celebrant::class, 'relationship_id');
     }
 
+    /*
+     * Get the validation rules that apply to the model's input.
+     *
+     * @param  array  $data
+     * @return array
+     */
+    public static function rules(array $data)
+    {
+        return [
+            'name' => 'required|unique:relationships,name|max:255',
+        ];
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Relationship;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class RelationshipController extends Controller
 {
@@ -49,7 +50,10 @@ class RelationshipController extends Controller
     public function update(Request $request, $id){
         try {
 
-            $data = $request->all();            
+            $data = $request->all();
+            
+            // Validate the request data using dynamic rules from the model
+            $request->validate(Relationship::rules($data));          
 
             $relationship = Relationship::where('id','=', $id)->first();
 
@@ -75,11 +79,14 @@ class RelationshipController extends Controller
     }
     public function create(Request $request){
         try {
-            
+
             $data = $request->all();
 
+            // Validate the request data using dynamic rules from the model
+            $request->validate(Relationship::rules($data));            
+
             $relationship = new Relationship();
-            $relationship->name = $data['name'];
+            $relationship->fill($data);
             $relationship->save();
 
             return response()->json([
@@ -88,6 +95,9 @@ class RelationshipController extends Controller
                 'data' => $relationship,
             ], 200);
 
+        } catch (ValidationException $e) {
+            // Handle validation errors
+            return response()->json(['error' => $e->errors()], 422);
         } catch (\Throwable $th) {
             return response()->json(['error' => 'Internal server error'], 500);
         }       
