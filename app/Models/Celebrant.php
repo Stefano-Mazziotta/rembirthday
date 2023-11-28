@@ -10,7 +10,7 @@ class Celebrant extends Model
     use HasFactory;
 
     protected $table = "celebrants";
-
+    
     protected $fillable = [
         'name',
         'surname',
@@ -19,4 +19,8 @@ class Celebrant extends Model
         'phone',
         'relationship_id'
     ];
+
+    public function relationship(){
+        return $this->belongsTo(Relationship::class, 'relationship_id');
+    }
 }
