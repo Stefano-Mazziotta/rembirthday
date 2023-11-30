@@ -9,7 +9,7 @@ use Illuminate\Validation\ValidationException;
 
 class RelationshipController extends Controller
 {
-    public function getAll(){
+    public function index(){
         try {
 
             $relationships = Relationship::with('celebrants')->get();
@@ -24,10 +24,8 @@ class RelationshipController extends Controller
             return response()->json(['error' => 'Internal server error'], 500);
         }
     }
-    public function getById(string $id){
-        try {
-
-            $relationship = Relationship::where('id', '=', $id)->first();            
+    public function show(Relationship $relationship){
+        try {          
 
             if(is_null($relationship)){
                 return response()->json([
@@ -38,7 +36,7 @@ class RelationshipController extends Controller
             }
 
             return response()->json([
-                'message' => "The relationship with the id '".$id."' was obtained correctly",
+                'message' => "The relationship with the id '".$relationship->id."' was obtained correctly",
                 'success' => true,
                 'data' => $relationship
             ], 200);
@@ -47,15 +45,13 @@ class RelationshipController extends Controller
             return response()->json(['error' => 'Internal server error'], 500);
         }
     }
-    public function update(Request $request, $id){
+    public function update(Request $request, Relationship $relationship){
         try {
 
             $data = $request->all();
             
             // Validate the request data using dynamic rules from the model
             $request->validate(Relationship::rules($data));          
-
-            $relationship = Relationship::where('id','=', $id)->first();
 
             if(is_null($relationship)){
                 return response()->json([
@@ -68,7 +64,7 @@ class RelationshipController extends Controller
             $relationship->update($data);
 
             return response()->json([
-                'message' => "The relationship with the id '".$id."' was updated correctly",
+                'message' => "The relationship with the id '".$relationship->id."' was updated correctly",
                 'success' => true,
                 'data' => $relationship
             ], 200);
@@ -77,7 +73,7 @@ class RelationshipController extends Controller
             return response()->json(['error' => 'Internal server error'], 500);
         }
     }
-    public function create(Request $request){
+    public function store(Request $request){
         try {
 
             $data = $request->all();
@@ -102,9 +98,18 @@ class RelationshipController extends Controller
             return response()->json(['error' => 'Internal server error'], 500);
         }       
     }
-    public function delete(string $id){
+    public function destroy(Relationship $relationship){
         try {
-            Relationship::where('id', $id)->delete();
+
+            if(is_null($relationship)){
+                return response()->json([
+                    'message' => "Not Found",
+                    'success' => true,
+                    'data' => null
+                ], 404);
+            }
+
+            $relationship->delete();
 
             return response()->json([
                 'message' => "Successfully deleted",

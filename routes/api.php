@@ -21,10 +21,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('relationship')->group(function () {
-    Route::get('/', [RelationshipController::class, 'getAll']);
-    Route::post('/', [RelationshipController::class, 'create']);
-    Route::delete('/{id}', [RelationshipController::class, 'delete']);
-    Route::get('/{id}', [RelationshipController::class, 'getById']);
+    Route::get('/', [RelationshipController::class, 'index']);
+    Route::post('/', [RelationshipController::class, 'store']);
+    Route::delete('/{id}', [RelationshipController::class, 'destroy']);
+    Route::get('/{id}', [RelationshipController::class, 'show']);
     Route::put('/{id}', [RelationshipController::class, 'update']);
 });
 
