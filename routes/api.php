@@ -29,9 +29,9 @@ Route::prefix('relationship')->group(function () {
 });
 
 Route::prefix('celebrant')->group(function () {
-    Route::get('/', [CelebrantController::class, 'getAll']);
-    Route::post('/', [CelebrantController::class, 'create']);
-    Route::delete('/{id}', [CelebrantController::class, 'delete']);
-    Route::get('/{id}', [CelebrantController::class, 'getById']);
+    Route::get('/', [CelebrantController::class, 'index']);
+    Route::post('/', [CelebrantController::class, 'store']);
+    Route::delete('/{id}', [CelebrantController::class, 'destroy']);
+    Route::get('/{id}', [CelebrantController::class, 'show']);
     Route::put('/{id}', [CelebrantController::class, 'update']);
 });

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class CelebrantController extends Controller
 {
-     public function getAll(){
+     public function index(){
         try {
 
             $celebrants = Celebrant::all();
@@ -24,10 +24,8 @@ class CelebrantController extends Controller
             return response()->json(['error' => 'Internal server error'], 500);
         }
     }
-    public function getById(string $id){
+    public function show(Celebrant $celebrant){
         try {
-
-            $celebrant = Celebrant::where('id', '=', $id)->first();            
 
             if(is_null($celebrant)){
                 return response()->json([
@@ -38,7 +36,7 @@ class CelebrantController extends Controller
             }
 
             return response()->json([
-                'message' => "The celebrant with the id '".$id."' was obtained correctly",
+                'message' => "The celebrant with the id '".$celebrant->id."' was obtained correctly",
                 'success' => true,
                 'data' => $celebrant
             ], 200);
@@ -47,13 +45,11 @@ class CelebrantController extends Controller
             return response()->json(['error' => 'Internal server error'], 500);
         }
     }
-    public function update(Request $request, $id){
+    public function update(Request $request, Celebrant $celebrant){
         try {
             $data = $request->all();
 
-            // validar si corresponde al modelo            
-
-            $celebrant = Celebrant::where('id','=', $id)->first();
+            // validate $data;
 
             if(is_null($celebrant)){
                 return response()->json([
@@ -66,7 +62,7 @@ class CelebrantController extends Controller
             $celebrant->update($data);
 
             return response()->json([
-                'message' => "The celebrant with the id '".$id."' was updated correctly",
+                'message' => "The celebrant with the id '".$celebrant->id."' was updated correctly",
                 'success' => true,
                 'data' => $celebrant
             ], 200);
@@ -75,10 +71,11 @@ class CelebrantController extends Controller
             return response()->json(['error' => 'Internal server error'], 500);
         }
     }
-    public function create(Request $request){
+    public function store(Request $request){
         try {
-            // check request params
             $data = $request->all();
+
+            // validate $data;
 
             $birthday = Carbon::createFromFormat('d/m/Y', $data['birthday']);
             $data['birthday'] = $birthday->toDateString();
@@ -95,14 +92,22 @@ class CelebrantController extends Controller
             ], 200);
 
         } catch (\Throwable $th) {
-            dd($th);
             return response()->json(['error' => 'Internal server error'], 500);
         }       
     }
-    public function delete(string $id){
+    public function destroy(Celebrant $celebrant){
         try {
-            Celebrant::where('id', $id)->delete();
-
+            
+            if(is_null($celebrant)){
+                return response()->json([
+                    'message' => "Not Found",
+                    'success' => true,
+                    'data' => null
+                ], 404);
+            }
+            
+            $celebrant->delete();
+            
             return response()->json([
                 'message' => "Successfully deleted",
                 'success' => true
