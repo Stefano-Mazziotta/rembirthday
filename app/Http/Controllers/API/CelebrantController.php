@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class CelebrantController extends Controller
 {
-     public function index(){
+    public function index(){
         try {
 
             $celebrants = Celebrant::all();
@@ -107,7 +107,7 @@ class CelebrantController extends Controller
             }
             
             $celebrant->delete();
-            
+
             return response()->json([
                 'message' => "Successfully deleted",
                 'success' => true
