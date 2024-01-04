@@ -14,9 +14,7 @@ class Celebrant extends Model
     protected $fillable = [
         'name',
         'surname',
-        'email',
-        'birthday',
-        'phone',
+        'birthday',        
         'relationship_id'
     ];
 

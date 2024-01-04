@@ -74,11 +74,10 @@ class CelebrantController extends Controller
     public function store(Request $request){
         try {
             $data = $request->all();
-
             // validate $data;
 
-            $birthday = Carbon::createFromFormat('d/m/Y', $data['birthday']);
-            $data['birthday'] = $birthday->toDateString();
+            // $birthday = $data['birthday'];
+            // $data['birthday'] = $birthday->toDateString();
 
             $celebrant = new Celebrant();
             $celebrant->fill($data);
